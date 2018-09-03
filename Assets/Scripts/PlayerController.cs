@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	
+    [SerializeField] PlayerMotor playerMotor;
 
 }

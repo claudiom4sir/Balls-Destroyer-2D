@@ -1,16 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMotor : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField] float speed = 10f;
+    Rigidbody2D rb;
+    float xDirection;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+            Debug.LogError("rb is null");
+    }
+
+    public void SetDirection(float _xDirection)
+    {
+        xDirection = _xDirection;
+    }
+
+    void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + Vector2.right * xDirection* speed * Time.fixedDeltaTime);
+    }
+
 }

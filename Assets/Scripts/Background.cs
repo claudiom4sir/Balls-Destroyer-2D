@@ -2,22 +2,22 @@
 
 public class Background : MonoBehaviour {
 
-    [SerializeField] BoxCollider2D leftWall;
-    [SerializeField] BoxCollider2D rightWall;
+    [SerializeField] GameObject leftWall;
+    [SerializeField] GameObject rightWall;
 
     void Start()
     {
-        DrawWall(leftWall, 0, new Vector3(0f, 0.5f, 0f));
+        DrawWall(leftWall, 0, new Vector2(0, 0.5f));
+        DrawWall(rightWall, 1, new Vector2(1, 0.5f));
     }
 
-    static void DrawWall(BoxCollider2D collider, float x, Vector3 centerPositionInViewPort)
+    static void DrawWall(GameObject wall, float x, Vector2 centerPositionInViewPort)
     {
-        Vector3 bottomPosition = Camera.main.ViewportToWorldPoint(new Vector3(x, 0, 0));
-        Debug.Log(bottomPosition);
-        Vector3 topPosition = Camera.main.ViewportToWorldPoint(new Vector3(x, 1, 0));
-        Debug.Log(topPosition);
-        collider.size = new Vector2(0.5f, (topPosition.y - bottomPosition.y) / 2);
-        Vector3 centerPosition = Camera.main.ViewportToWorldPoint(centerPositionInViewPort);
+        Vector2 bottomPosition = Camera.main.ViewportToWorldPoint(new Vector2(x, 0));
+        Vector2 topPosition = Camera.main.ViewportToWorldPoint(new Vector2(x, 1));
+        wall.transform.localScale = new Vector2(0.5f, topPosition.y - bottomPosition.y);
+        Vector2 centerPosition = Camera.main.ViewportToWorldPoint(centerPositionInViewPort);
+        wall.transform.position = centerPosition;
     }
 
 }
