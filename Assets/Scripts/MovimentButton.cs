@@ -8,11 +8,9 @@ public class MovimentButton : MonoBehaviour {
 
     void Start()
     {
-        playerMotor = GetComponentInParent<MovimentButtons>().GetPlayerMotor(); ;
+        playerMotor = GetComponentInParent<ControlButtons>().GetPlayerMotor();
         if (playerMotor == null)
             Debug.LogError("playerMotor is null");
-        if (leftButton && rightButton || !leftButton && !rightButton)
-            Debug.LogError("Only one of right or left buttons must be checked, not both or anyone");
     }
 
     public void SetLeftOrRight(string buttonName)

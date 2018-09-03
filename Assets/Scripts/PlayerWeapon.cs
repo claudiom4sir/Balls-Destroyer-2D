@@ -1,16 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] Transform firePoint;
+
+    bool existsBullet;
+
+    public void Shoot()
+    {
+        if (existsBullet)
+            return;
+        Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        existsBullet = true;
+    }
+
+    public void SetExistsBullet(bool value)
+    {
+        existsBullet = value;
+    }
+
+    public bool GetExistsBullet()
+    {
+        return existsBullet;
+    }
+
 }

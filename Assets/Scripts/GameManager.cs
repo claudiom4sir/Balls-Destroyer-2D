@@ -4,7 +4,9 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager singleton;
 
-    [SerializeField] GameObject wallPrefab;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject[] ballsPrefabs;
+    bool gameOver;
 
     void Awake()
     {
@@ -14,14 +16,20 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
     }
 
-    void Start()
+    public void GameOver()
     {
-        DrawWall();
+        gameOver = true;
+        Debug.Log("Game Over");
     }
 
-    void DrawWall()
+    public GameObject GetPlayer()
     {
+        return player;
+    }
 
+    public bool GetGameOver()
+    {
+        return gameOver;
     }
 
 }

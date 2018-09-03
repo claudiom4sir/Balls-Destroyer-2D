@@ -5,7 +5,7 @@ public class ControlButtons : MonoBehaviour
 
     [SerializeField] GameObject leftMoviment;
     [SerializeField] GameObject rightMoviment;
-    [SerializeField] PlayerMotor playerMotor;
+    [SerializeField] GameObject shoot;
 
     void Start()
     {
@@ -15,7 +15,16 @@ public class ControlButtons : MonoBehaviour
 
     public PlayerMotor GetPlayerMotor()
     {
-        return playerMotor;
+        GameObject player = GameManager.singleton.GetPlayer();
+        PlayerMotor pm = player.GetComponent<PlayerMotor>();
+        return pm;
+    }
+
+    public PlayerWeapon GetPlayerWeapon()
+    {
+        GameObject player = GameManager.singleton.GetPlayer();
+        PlayerWeapon pw = player.GetComponent<PlayerWeapon>();
+        return pw;
     }
 
 }

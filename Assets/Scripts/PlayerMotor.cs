@@ -23,4 +23,10 @@ public class PlayerMotor : MonoBehaviour {
         rb.MovePosition(rb.position + Vector2.right * xDirection* speed * Time.fixedDeltaTime);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Ball" && !GameManager.singleton.GetGameOver())
+            GameManager.singleton.GameOver();
+    }
+
 }
