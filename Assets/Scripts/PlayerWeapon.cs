@@ -15,6 +15,12 @@ public class PlayerWeapon : MonoBehaviour {
         existsBullet = true;
     }
 
+    void Update() // used only for test on pc
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            Shoot();
+    }
+
     public void SetExistsBullet(bool value)
     {
         existsBullet = value;

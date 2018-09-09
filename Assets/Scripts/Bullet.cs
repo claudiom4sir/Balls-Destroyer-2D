@@ -6,12 +6,16 @@ public class Bullet : MonoBehaviour {
     Rigidbody2D rb;
     float maxY; // if this bullet achive this y coordinate, it will be destroyed
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
             Debug.LogError("rb is null");
-        SetMaxY();
+    }
+
+    void Start()
+    {
+        SetMaxY();   
     }
 
     void SetMaxY()
@@ -26,13 +30,12 @@ public class Bullet : MonoBehaviour {
             DestroyBullet();
     }
 
-    void DestroyBullet()
+    public void DestroyBullet()
     {
         PlayerWeapon pw = GameManager.singleton.GetPlayer().GetComponent<PlayerWeapon>();
         if (pw == null)
             Debug.LogError("pw is null");
-        else
-            pw.SetExistsBullet(false);
+        pw.SetExistsBullet(false);
         Destroy(gameObject);
     }
 

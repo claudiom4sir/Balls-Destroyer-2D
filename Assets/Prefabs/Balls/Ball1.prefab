@@ -89,7 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb686a2c9e9b2314bad2adb70d1062a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextBall: {fileID: 1027737668344982, guid: cbbeee58e9197ca46b9001370e98aa14, type: 2}
+  nextBallPrefab: {fileID: 1027737668344982, guid: cbbeee58e9197ca46b9001370e98aa14,
+    type: 2}
 --- !u!212 &212184328787727324
 SpriteRenderer:
   m_ObjectHideFlags: 1

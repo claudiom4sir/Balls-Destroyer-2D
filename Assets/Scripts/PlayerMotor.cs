@@ -6,7 +6,7 @@ public class PlayerMotor : MonoBehaviour {
     Rigidbody2D rb;
     float xDirection;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
@@ -23,9 +23,19 @@ public class PlayerMotor : MonoBehaviour {
         rb.MovePosition(rb.position + Vector2.right * xDirection* speed * Time.fixedDeltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void Update() // used only for test on pc
     {
-        if (collision.collider.tag == "Ball" && !GameManager.singleton.GetGameOver())
+        if (Input.GetKey(KeyCode.LeftArrow))
+            SetDirection(-1);
+        else if (Input.GetKey(KeyCode.RightArrow))
+            SetDirection(1);
+        else
+            SetDirection(0);
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Ball" && !GameManager.singleton.IsGameOver())
             GameManager.singleton.GameOver();
     }
 

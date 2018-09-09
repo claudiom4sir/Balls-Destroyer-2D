@@ -15,7 +15,7 @@ public class Background : MonoBehaviour {
     {
         Vector2 bottomPosition = Camera.main.ViewportToWorldPoint(new Vector2(x, 0));
         Vector2 topPosition = Camera.main.ViewportToWorldPoint(new Vector2(x, 1));
-        wall.transform.localScale = new Vector2(0.5f, topPosition.y - bottomPosition.y);
+        wall.transform.localScale = new Vector2(0.1f, topPosition.y - bottomPosition.y);
         Vector2 centerPosition = Camera.main.ViewportToWorldPoint(centerPositionInViewPort);
         wall.transform.position = centerPosition;
     }

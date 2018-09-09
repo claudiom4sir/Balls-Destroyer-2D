@@ -2,36 +2,61 @@
 
 public class Ball : MonoBehaviour {
 
+    [SerializeField] GameObject nextBallPrefab;
     Rigidbody2D rb;
-    [SerializeField] GameObject nextBall;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
+        if (rb == null)   
             Debug.LogError("rb is null");
-        AddInitialForce();
     }
 
-    void AddInitialForce()
+    public void AddInitialForce()
     {
-        float x = Random.Range(0.5f, 1f);
-        //float y = Random.Range(0.5f, 1f);
         float factor = Random.Range(0f, 1f);
         if (factor <= 0.5f)
             factor = -1f;
         else
             factor = 1f;
-        Vector2 force = new Vector2(x * factor, 1f) * 5f;
+        Vector2 force = new Vector2(factor, 0f) * 5f;
+        rb.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    void AddForce(int x)
+    {
+        Vector2 force = new Vector2(x, 0f) * 5f;
         rb.AddForce(force, ForceMode2D.Impulse);
     }
 
     public GameObject GetNextBall()
     {
-        return nextBall;
+        return nextBallPrefab;
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (GameManager.singleton.IsGameOver())
+            return;
+        if (collision.collider.tag == "Bullet") {
+            Bullet bullet = collision.collider.GetComponent<Bullet>();
+            if (bullet == null)
+                Debug.LogError("bullet is null");
+            bullet.DestroyBullet();
+            NextBall();
+        }
+    }
 
-
+    void NextBall()
+    {
+        if(nextBallPrefab != null)
+        {
+            GameObject lBall = Instantiate(nextBallPrefab, transform.position, Quaternion.identity);
+            GameObject rBall = Instantiate(nextBallPrefab, transform.position, Quaternion.identity);
+            lBall.GetComponent<Ball>().AddForce(-1);
+            rBall.GetComponent<Ball>().AddForce(1);
+        }
+        Destroy(gameObject);
+    }
 
 }
