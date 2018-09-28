@@ -20,10 +20,14 @@ public class PlayerMotor : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+            return;
+
+        // if _xDirection is 1, player moves on right, otherwise (-1) it moves on left
         rb.MovePosition(rb.position + Vector2.right * xDirection* speed * Time.fixedDeltaTime);
     }
 
-    void Update() // used only for test on pc
+    void Update() // used only to test on pc
     {
         if (Input.GetKey(KeyCode.LeftArrow))
             SetDirection(-1);
@@ -35,7 +39,9 @@ public class PlayerMotor : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Ball" && !GameManager.singleton.IsGameOver())
+        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+            return;
+        if (collision.collider.tag == "Ball")
             GameManager.singleton.GameOver();
     }
 

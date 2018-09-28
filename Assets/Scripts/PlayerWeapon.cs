@@ -17,6 +17,8 @@ public class PlayerWeapon : MonoBehaviour {
 
     void Update() // used only for test on pc
     {
+        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+            return;
         if (Input.GetKeyDown(KeyCode.Space))
             Shoot();
     }

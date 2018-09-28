@@ -36,7 +36,7 @@ public class Ball : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (GameManager.singleton.IsGameOver())
+        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
             return;
         if (collision.collider.tag == "Bullet") {
             Bullet bullet = collision.collider.GetComponent<Bullet>();
@@ -49,13 +49,16 @@ public class Ball : MonoBehaviour {
 
     void NextBall()
     {
-        if(nextBallPrefab != null)
+        if (nextBallPrefab != null)
         {
             GameObject lBall = Instantiate(nextBallPrefab, transform.position, Quaternion.identity);
             GameObject rBall = Instantiate(nextBallPrefab, transform.position, Quaternion.identity);
             lBall.GetComponent<Ball>().AddForce(-1);
             rBall.GetComponent<Ball>().AddForce(1);
+            BallsManager.singleton.UpdateBallsInGame("+");
         }
+        else
+            BallsManager.singleton.UpdateBallsInGame("-");
         Destroy(gameObject);
     }
 

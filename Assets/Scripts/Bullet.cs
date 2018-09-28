@@ -25,6 +25,8 @@ public class Bullet : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+            return;
         rb.MovePosition(rb.position + Vector2.up * speed * Time.fixedDeltaTime);
         if (rb.position.y >= maxY)
             DestroyBullet();

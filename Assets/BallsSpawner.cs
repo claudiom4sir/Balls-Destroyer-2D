@@ -14,9 +14,9 @@ public class BallsSpawner : MonoBehaviour {
             ballsSpawnPoints[i] = transform.GetChild(i);
     }
 
-    public void CreateBall(int ballsNumber)
+    public void CreateBalls(int ballsNumber)
     {
-        firstBall = GameManager.singleton.GetFirstBallPrefabs();
+        firstBall = BallsManager.singleton.GetFirstBallPrefabs();
         StartCoroutine(ICreateBall(ballsNumber));
     }
 
@@ -35,7 +35,7 @@ public class BallsSpawner : MonoBehaviour {
     {
         GameObject ball =  Instantiate(firstBall, ballsSpawnPoints[indexOfSpawnPoint].position, Quaternion.identity);
         ball.GetComponent<Ball>().AddInitialForce();
+        BallsManager.singleton.UpdateBallsInGame("+");
     }
-
 
 }
