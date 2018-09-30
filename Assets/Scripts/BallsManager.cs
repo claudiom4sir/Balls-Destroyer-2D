@@ -9,6 +9,7 @@ public class BallsManager : MonoBehaviour {
 
     int ballsInGame = 0;
     bool gameStarted;
+    GameManager gameManager;
 
     void Awake()
     {
@@ -16,6 +17,7 @@ public class BallsManager : MonoBehaviour {
             singleton = this;
         else
             Destroy(gameObject);
+        gameManager = GameManager.singleton;
     }
 
     public GameObject GetFirstBallPrefabs()
@@ -35,7 +37,7 @@ public class BallsManager : MonoBehaviour {
         else if (sign == "-")
             ballsInGame--;
         if (ballsInGame == 0)
-            GameManager.singleton.LevelCompleted();
+            gameManager.LevelCompleted();
     }
 
     

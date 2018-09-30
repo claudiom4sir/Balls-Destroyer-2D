@@ -4,12 +4,14 @@ public class Ball : MonoBehaviour {
 
     [SerializeField] GameObject nextBallPrefab;
     Rigidbody2D rb;
+    GameManager gameManager;
+    BallsManager ballsManager;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)   
-            Debug.LogError("rb is null");
+        gameManager = GameManager.singleton;
+        ballsManager = BallsManager.singleton;
     }
 
     public void AddInitialForce()
@@ -36,7 +38,7 @@ public class Ball : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+        if (gameManager.IsGameOver() || gameManager.IsLevelCompleted() || gameManager.IsGameInPause())
             return;
         if (collision.collider.tag == "Bullet") {
             Bullet bullet = collision.collider.GetComponent<Bullet>();
@@ -55,10 +57,10 @@ public class Ball : MonoBehaviour {
             GameObject rBall = Instantiate(nextBallPrefab, transform.position, Quaternion.identity);
             lBall.GetComponent<Ball>().AddForce(-1);
             rBall.GetComponent<Ball>().AddForce(1);
-            BallsManager.singleton.UpdateBallsInGame("+");
+            ballsManager.UpdateBallsInGame("+");
         }
         else
-            BallsManager.singleton.UpdateBallsInGame("-");
+            ballsManager.UpdateBallsInGame("-");
         Destroy(gameObject);
     }
 

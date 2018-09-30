@@ -1,45 +1,30 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMotor : MonoBehaviour {
 
     [SerializeField] float speed = 10f;
     Rigidbody2D rb;
     float xDirection;
+    GameManager gameManager;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-            Debug.LogError("rb is null");
-    }
-
-    public void SetDirection(float _xDirection)
-    {
-        xDirection = _xDirection;
+        gameManager = GameManager.singleton;
     }
 
     void FixedUpdate()
     {
-        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+        if (gameManager.IsGameOver() || gameManager.IsLevelCompleted() || gameManager.IsGameInPause())
             return;
-
-        // if _xDirection is 1, player moves on right, otherwise (-1) it moves on left
+        xDirection = CrossPlatformInputManager.GetAxis("Horizontal");
         rb.MovePosition(rb.position + Vector2.right * xDirection* speed * Time.fixedDeltaTime);
-    }
-
-    void Update() // used only to test on pc
-    {
-        if (Input.GetKey(KeyCode.LeftArrow))
-            SetDirection(-1);
-        else if (Input.GetKey(KeyCode.RightArrow))
-            SetDirection(1);
-        else
-            SetDirection(0);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+        if (gameManager.IsGameOver() || gameManager.IsLevelCompleted() || gameManager.IsGameInPause())
             return;
         if (collision.collider.tag == "Ball")
             GameManager.singleton.GameOver();

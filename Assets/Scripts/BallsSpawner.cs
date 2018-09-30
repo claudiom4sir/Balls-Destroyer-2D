@@ -6,9 +6,11 @@ public class BallsSpawner : MonoBehaviour {
     [SerializeField] float timeBetweenballsSpawn = 0.5f;
     GameObject firstBall;
     Transform[] ballsSpawnPoints;
+    BallsManager ballsManager;
 
     void Awake()
     {
+        ballsManager = BallsManager.singleton;
         ballsSpawnPoints = new Transform[transform.childCount];
         for (int i = 0; i < ballsSpawnPoints.Length; i++)
             ballsSpawnPoints[i] = transform.GetChild(i);
@@ -16,7 +18,7 @@ public class BallsSpawner : MonoBehaviour {
 
     public void CreateBalls(int ballsNumber)
     {
-        firstBall = BallsManager.singleton.GetFirstBallPrefabs();
+        firstBall = ballsManager.GetFirstBallPrefabs();
         StartCoroutine(ICreateBall(ballsNumber));
     }
 
@@ -35,7 +37,7 @@ public class BallsSpawner : MonoBehaviour {
     {
         GameObject ball =  Instantiate(firstBall, ballsSpawnPoints[indexOfSpawnPoint].position, Quaternion.identity);
         ball.GetComponent<Ball>().AddInitialForce();
-        BallsManager.singleton.UpdateBallsInGame("+");
+        ballsManager.UpdateBallsInGame("+");
     }
 
 }

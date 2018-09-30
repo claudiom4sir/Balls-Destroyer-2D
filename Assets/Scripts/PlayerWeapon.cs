@@ -6,6 +6,12 @@ public class PlayerWeapon : MonoBehaviour {
     [SerializeField] Transform firePoint;
 
     bool existsBullet;
+    GameManager gameManager;
+
+    void Awake()
+    {
+        gameManager = GameManager.singleton;    
+    }
 
     public void Shoot()
     {
@@ -17,7 +23,7 @@ public class PlayerWeapon : MonoBehaviour {
 
     void Update() // used only for test on pc
     {
-        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+        if (gameManager.IsGameOver() || gameManager.IsLevelCompleted() || gameManager.IsLevelCompleted())
             return;
         if (Input.GetKeyDown(KeyCode.Space))
             Shoot();

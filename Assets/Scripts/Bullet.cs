@@ -5,12 +5,12 @@ public class Bullet : MonoBehaviour {
     [SerializeField] float speed = 5f;
     Rigidbody2D rb;
     float maxY; // if this bullet achive this y coordinate, it will be destroyed
+    GameManager gameManager;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-            Debug.LogError("rb is null");
+        gameManager = GameManager.singleton;
     }
 
     void Start()
@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (GameManager.singleton.IsGameOver() || GameManager.singleton.IsLevelCompleted())
+        if (gameManager.IsGameOver() || gameManager.IsLevelCompleted() || gameManager.IsGameInPause())
             return;
         rb.MovePosition(rb.position + Vector2.up * speed * Time.fixedDeltaTime);
         if (rb.position.y >= maxY)
@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour {
 
     public void DestroyBullet()
     {
-        PlayerWeapon pw = GameManager.singleton.GetPlayer().GetComponent<PlayerWeapon>();
+        PlayerWeapon pw = gameManager.GetPlayer().GetComponent<PlayerWeapon>();
         if (pw == null)
             Debug.LogError("pw is null");
         pw.SetExistsBullet(false);

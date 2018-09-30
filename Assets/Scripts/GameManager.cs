@@ -1,29 +1,24 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager singleton;
-
+    
     [SerializeField] int numberOfBalls = 2;
     [SerializeField] GameObject player;
 
-    // used to call a set of methods when game will be over when the level will be completed
-    public delegate void GameOverAction();
-    public event GameOverAction OnGameOver;
-
-    // used to call a set of methods when game will be over when the level will be completed
-    public delegate void LevelCompletedAction();
-    public event GameOverAction OnLevelCompleted;
-
     bool gameOver = false;
     bool levelCompleted = false;
+    bool gameInPause = false;
+    bool gameStarted = false;
 
     void Awake()
     {
         if (singleton == null)
+        {
             singleton = this;
+        }
         else
             Destroy(gameObject);
     }
@@ -38,7 +33,7 @@ public class GameManager : MonoBehaviour
     {
         gameOver = true;
         Time.timeScale = 0f;
-        OnGameOver();
+        UIManager.singleton.GameOver();
         Debug.Log("Game Over");
     }
 
@@ -46,14 +41,13 @@ public class GameManager : MonoBehaviour
     {
         levelCompleted = true;
         Time.timeScale = 0f;
-        OnLevelCompleted();
-        Debug.Log("Level completed");
+        UIManager.singleton.LevelCompleted();
     }
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene("GameScene");
         Time.timeScale = 1f;
+        ScenesManager.singleton.ChangeScene("GameScene", 0f);
     }
 
     public GameObject GetPlayer()
@@ -61,9 +55,26 @@ public class GameManager : MonoBehaviour
         return player;
     }
 
+    public void PauseGame()
+    {
+        if (gameOver || levelCompleted)
+            return;
+        gameInPause = !gameInPause;
+        if (Time.timeScale == 1f)
+            Time.timeScale = 0f;
+        else
+            Time.timeScale = 1f;
+        UIManager.singleton.PauseGame();
+    }
+
     public bool IsGameOver()
     {
         return gameOver;
+    }
+
+    public bool IsGameInPause()
+    {
+        return gameInPause;
     }
 
     public bool IsLevelCompleted()
@@ -71,15 +82,23 @@ public class GameManager : MonoBehaviour
         return levelCompleted;
     }
 
+    public bool IsGameStarted()
+    {
+        return gameStarted;
+    }
+
     public void StartGame()
     {
+        gameStarted = true;
+        UIManager.singleton.StartGame();
         // this method takes in input the numer of balls that it has to spawns
         BallsManager.singleton.StartGame(numberOfBalls);
     }
 
     public void Exit()
     {
-        SceneManager.LoadScene("ExitScene");
+        Time.timeScale = 1f;
+        ScenesManager.singleton.ChangeScene("ExitScene", 0f);
     }
 
 }
